@@ -4,11 +4,11 @@ These are my customized versions of the Foothold DCS missions, tweaked for the s
 
 **Nearly all the credit goes to Leka.** Foothold is Leka's work. For the original missions, updates, documentation and support, go to his repo:
 
-👉 **[github.com/leka1986/Lekas-Foothold](https://github.com/leka1986/Lekas-Foothold)**
+**[github.com/leka1986/Lekas-Foothold](https://github.com/leka1986/Lekas-Foothold)**
 
 The customizations themselves (my own work) live in a separate repo:
 
-👉 **[github.com/cbass2404/custom_leka_foothold](https://github.com/cbass2404/custom_leka_foothold)**
+**[github.com/cbass2404/custom_leka_foothold](https://github.com/cbass2404/custom_leka_foothold)**
 
 ## What's here
 
