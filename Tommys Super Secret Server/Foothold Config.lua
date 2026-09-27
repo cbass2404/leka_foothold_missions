@@ -81,6 +81,7 @@ FootholdConfigTrackedScalarNames = {
     "NormalSupplyCapacity",
     "WarehouseSupplyCapacity",
     "CTLDSupplyCapacity",
+    "ExtraRedRepairTimeLowPlayerCountPercent",
     "ForceNoJHMCS",
     "JhmcsGracePeriod",
     "TravelPodPenaltyWeight",
@@ -189,7 +190,7 @@ Era = "Modern"
 
 -- Choose which RED SAM templates are allowed when the mission replaces or randomizes SAM groups.
 -- Untick a SAM type to prevent that template from being used.
--- @gui label="RED SAM templates" editor="checkboxTable" rowLabel="comment" confirmSetRowsByEra="Select RED SAM templates based on Era?"
+-- @gui label="RED SAM templates" editor="checkboxTable" rowLabel="comment" confirmSetRowsByEra="Select RED SAM templates based on Era?" installPolicy="replaceTable"
 -- @gui untickRowsWhen="NoSA10AndSA11:true:SA-10|SA-11;NoTorM2AndPantsir:true:Tor M2|Pantsir S1;NoSA15:true:SA-15"
 RedTemplateEnabled = {
     ["SA-2"] = true, -- eras=Modern|Coldwar|Vietnam; SA-2 [All]
@@ -210,7 +211,7 @@ RedTemplateEnabled = {
 
 -- AI aircraft templates used by missions that support config-driven template selection.
 -- Rows with a checkmark are available for AI spawning.
--- @gui label="RED CAP Templates" editor="checkboxTable" rowLabel="comment" confirmSetRowsByEra="Select aircraft templates based on Era?"
+-- @gui label="RED CAP Templates" editor="checkboxTable" rowLabel="comment" confirmSetRowsByEra="Select aircraft templates based on Era?" installPolicy="replaceTable"
 RedCapPlaneEnabled = {
     ["RED_MIG29S_CAP_R77x3_R27ET_R73x2"] = true, -- eras=Modern; MiG-29S Fox 3 CAP [Modern]
     ["RED_MIG29S_CAP_R77x2_R73x2_TANKSx3"] = true, -- eras=Modern; MiG-29S Fox 3 CAP [Modern]
@@ -219,8 +220,8 @@ RedCapPlaneEnabled = {
     ["RED_MIG31_CAP_R33x4_R40Tx2"] = true, -- eras=Modern; MiG-31 Fox 1 CAP [Modern]
     ["RED_MIRAGE_F1CE_CAP_S530Fx2_MAGIC2x2"] = true, -- eras=Modern|Coldwar; Mirage F1CE Fox 1 CAP [Modern/CW]
     ["RED_MIRAGE_F1CE_CAP_R530F_EMx2_MAGIC2x2"] = true, -- eras=Modern|Coldwar; Mirage F1CE Fox 1 CAP [Modern/CW]
-    ["RED_MIG29A_CAP_R73x6"] = true, -- eras=Modern|Coldwar; MiG-29A IR CAP [Modern/CW]
-    ["RED_MIG29A_CAP_R73x4_R27ER2X"] = true, -- eras=Modern|Coldwar; MiG-29A Fox 1 CAP [Modern/CW]
+    ["RED_MIG29A_CAP_R73x4_R27R2x"] = true, -- eras=Modern|Coldwar; MiG-29A R-27R Fox 1 CAP [Modern/CW]
+    ["RED_MIG29A_CAP_R73x4_R27ER2X"] = true, -- eras=Modern|Coldwar; MiG-29A R-27ER Fox 1 CAP [Modern/CW]
     ["RED_MIG25PD_CAP_R40Rx2_R60Mx2"] = false, --eras=Modern|Coldwar; MiG-25PD Fox 1 CAP [Modern/CW]
     ["RED_SU27_CAP_R27ERx5_R73x3_ECM"] = false, -- eras=Modern|Coldwar; Su-27 Fox 1 CAP [Modern/CW]
     ["RED_MIG23MLD_CAP_R24Rx2_R60Mx2"] = true, -- eras=Modern|Coldwar; MiG-23MLD Fox 1 CAP [Modern/CW]
@@ -232,11 +233,12 @@ RedCapPlaneEnabled = {
     ["RED_L39C_CAP_R3S2X"] = false, -- eras=Vietnam; L-39C Fox 2 CAP [VN]
 }
 
--- @gui label="BLUE CAP Templates" editor="checkboxTable" rowLabel="comment" confirmSetRowsByEra="Select aircraft templates based on Era?"
+-- @gui label="BLUE CAP Templates" editor="checkboxTable" rowLabel="comment" confirmSetRowsByEra="Select aircraft templates based on Era?" installPolicy="replaceTable"
 BlueCapPlaneEnabled = {
     ["BLUE_FA18C_CAP_AIM120Cx6_AIM9Xx2"] = true, -- eras=Modern; F/A-18C Fox 3 CAP [Modern]
     ["BLUE_F15C_CAP_AIM120Bx3_AIM120Cx5"] = true, -- eras=Modern; F-15C Fox 3 CAP [Modern]
     ["BLUE_F16C_CAP_AIM120Bx4_AIM120C_AIM9M"] = true, -- eras=Modern; F-16C Fox 3 CAP [Modern]
+    ["BLUE_F16_CAP_AIM120Cx5_AIM9Xx1"] = true, -- eras=Modern; 2x F-16C Fox 3 CAP [Modern]
     ["BLUE_F14B_CAP_AIM54A_MK47x4_AIM7Mx2_AIM9Mx2_TANKSx2"] = true, -- eras=Modern|Coldwar; F-14B AIM54A-MK47 [Modern/CW]
     ["BLUE_F14B_CAP_AIM54C_MK47x4_AIM7Mx2_AIM9Mx2_TANKSx2"] = true, -- eras=Modern|Coldwar; F-14B AIM54C-MK47 [Modern/CW]
     ["BLUE_F14B_CAP_AIM54C_MK60x4_AIM7Mx2_AIM9Mx2_TANKSx2"] = true, -- eras=Modern|Coldwar; F-14B AIM54C-MK60 [Modern/CW]
@@ -251,22 +253,22 @@ BlueCapPlaneEnabled = {
     ["BLUE_F86F_CAP_GAR8x2"] = false, -- eras=Vietnam; F-86F IR CAP [VN]
 }
 
--- @gui label="RED CAS Plane Templates" editor="checkboxTable" rowLabel="comment" confirmSetRowsByEra="Select aircraft templates based on Era?"
+-- @gui label="RED CAS Plane Templates" editor="checkboxTable" rowLabel="comment" confirmSetRowsByEra="Select aircraft templates based on Era?" installPolicy="replaceTable"
 RedCasPlaneEnabled = {
-    ["RED_SU25T_CAS_KH25MP_MPU_VIKHRx2_SPPUx2_1SHIP"] = true, -- eras=Modern; Su-25T CAS [Modern]
-    ["RED_SU25T_CAS_S25Lx6_B13x2_1SHIP"] = true, -- eras=Modern; Su-25T CAS [Modern]
-    ["RED_SU25T_CAS_VIKHRx2_S25Lx2_SPPUx2_1SHIP"] = true, -- eras=Modern; Su-25T CAS [Modern]
-    ["RED_SU25T_CAS_KH25MP_MPU_VIKHRx2_SPPUx2_2SHIP"] = true, -- eras=Modern; 2x Su-25T CAS [Modern]
-    ["RED_SU25T_CAS_S25Lx6_B13x2_2SHIP"] = true, -- eras=Modern; 2x Su-25T CAS [Modern]
-    ["RED_SU25T_CAS_VIKHRx2_S25Lx2_SPPUx2_2SHIP"] = true, -- eras=Modern; 2x Su-25T CAS [Modern]
+    ["RED_SU25T_CAS_KH25MPx2_VIKHRx2_KH29Tx2_1SHIP"] = true, -- eras=Modern; Su-25T CAS [Modern]
+    ["RED_SU25T_CAS_KH25MLx4_KH29Tx2_1SHIP"] = true, -- eras=Modern; Su-25T CAS [Modern]
+    ["RED_SU25T_CAS_VIKHRx2_FAB500M62x2_KH29Tx2_1SHIP"] = true, -- eras=Modern; Su-25T CAS [Modern]
+    ["RED_SU25T_CAS_KH25MPx2_VIKHRx2_KH29Tx2_2SHIP"] = true, -- eras=Modern; 2x Su-25T CAS [Modern]
+    ["RED_SU25T_CAS_KH25MLx4_KH29Tx2_2SHIP"] = true, -- eras=Modern; 2x Su-25T CAS [Modern]
+    ["RED_SU25T_CAS_VIKHRx2_FAB500M62x2_KH29Tx2_2SHIP"] = true, -- eras=Modern; 2x Su-25T CAS [Modern]
     ["RED_MIG21BIS_CAS_RBK250x2_UB32x2_1SHIP"] = false, -- eras=Modern; MiG-21bis CAS [Modern]
     ["RED_MIG21BIS_CAS_RBK250x2_UB32x2_2SHIP"] = false, -- eras=Modern; 2x MiG-21bis CAS [Modern]
-    ["RED_SU25_CAS_KH25ML_S25Lx2_RBK500x2_B8x2_SPPU_1SHIP"] = false, -- eras=Modern|Coldwar; Su-25 CAS [Modern/CW]
-    ["RED_SU25_CAS_FAB250x2_RBK250x2_B8x4_1SHIP"] = false, -- eras=Modern|Coldwar; Su-25 CAS [Modern/CW]
-    ["RED_SU25_CAS_S25Lx6_B13x2_1SHIP"] = false, -- eras=Modern|Coldwar; Su-25 CAS [Modern/CW]
-    ["RED_SU25_CAS_KH25ML_S25Lx2_RBK500x2_B8x2_SPPU_2SHIP"] = true, -- eras=Modern|Coldwar; 2x Su-25 CAS [Modern/CW]
-    ["RED_SU25_CAS_FAB250x2_RBK250x2_B8x4_2SHIP"] = true, -- eras=Modern|Coldwar; 2x Su-25 CAS [Modern/CW]
-    ["RED_SU25_CAS_S25Lx6_B13x2_1SHIP_DUPLICATE"] = true, -- eras=Modern|Coldwar; Su-25 CAS [Modern/CW]
+    ["RED_SU25_CAS_KH25ML_S25Lx2_FAB500M62x2_B8x2_SPPU_1SHIP"] = false, -- eras=Coldwar; Su-25 CAS [CW]
+    ["RED_SU25_CAS_FAB250x2_FAB500M62x2_B8x2_S24Bx2_1SHIP"] = false, -- eras=Coldwar; Su-25 CAS [CW]
+    ["RED_SU25_CAS_KH25MLx2_S25Lx2_FAB500M62x2_B13x2_1SHIP"] = false, -- eras=Coldwar; Su-25 CAS [CW]
+    ["RED_SU25_CAS_KH25ML_S25Lx2_FAB500M62x2_B8x2_SPPU_2SHIP"] = false, -- eras=Coldwar; 2x Su-25 CAS [CW]
+    ["RED_SU25_CAS_FAB250x2_FAB500M62x2_B8x2_S24Bx2_2SHIP"] = false, -- eras=Coldwar; 2x Su-25 CAS [CW]
+    ["RED_SU25_CAS_KH25MLx2_S25Lx2_FAB500M62x2_B13x2_2SHIP"] = false, -- eras=Coldwar; 2x Su-25 CAS [CW]
     ["RED_MIRAGE_F1BQ_CAS_SAMP400x2_SAMP250x2_2SHIP"] = false, -- eras=Modern|Coldwar; 2x Mirage F1BQ CAS [Modern/CW]
     ["RED_MIRAGE_F1BQ_CAS_MIXED_SNEB_SAMP_2SHIP"] = false, -- eras=Modern|Coldwar; 2x Mirage F1BQ CAS [Modern/CW]
     ["RED_MIG21BIS_CAS_S24Bx4_1SHIP"] = false, -- eras=Coldwar; MiG-21bis S-24B CAS [CW]
@@ -286,10 +288,11 @@ RedCasPlaneEnabled = {
 
 }
 
--- @gui label="BLUE CAS Plane Templates" editor="checkboxTable" rowLabel="comment" confirmSetRowsByEra="Select aircraft templates based on Era?"
+-- @gui label="BLUE CAS Plane Templates" editor="checkboxTable" rowLabel="comment" confirmSetRowsByEra="Select aircraft templates based on Era?" installPolicy="replaceTable"
 BlueCasPlaneEnabled = {
     ["BLUE_F4E_CAS_WALLEYEIIx2_GBU12x2_PAVESPIKE_2SHIP"] = true, -- eras=Modern|Coldwar; 2x F-4E Guided CAS [Modern/CW]
     ["BLUE_F4E_CAS_AGM65Dx6_GBU12x2_PAVESPIKE_2SHIP"] = true, -- eras=Modern|Coldwar; 2x F-4E Maverick CAS [Modern/CW]
+    ["BLUE_F16_CAS_AGM65Dx4_GBU12x2_PAVESPIKE_2SHIP"] = true, -- eras=Modern; 2x F-16C Maverick CAS [Modern]
     ["BLUE_F86F_CAS_AIM9Bx2_HVARx8_TANKSx2_2SHIP"] = false, -- eras=Coldwar; 2x F-86F Rocket CAS [CW]
     ["BLUE_F86F_CAS_AIM9Bx2_M117x2_2SHIP"] = false, -- eras=Coldwar; 2x F-86F M117 CAS [CW]
     ["BLUE_F4E_CAS_M117x12_AIM7E2x3_TANKSx2_ALQ131"] = false, -- eras=Vietnam|Coldwar; 2x F-4E M117 CAS [VN/CW]
@@ -302,7 +305,7 @@ BlueCasPlaneEnabled = {
     ["BLUE_F5E3_CAS_MK82SEx4_AIM9Bx2_TANK275_2SHIP"] = false, -- eras=Vietnam; 2x F-5E-3 Snakeye CAS [VN]
 }
 
--- @gui label="RED SEAD Plane Templates" editor="checkboxTable" rowLabel="comment" confirmSetRowsByEra="Select aircraft templates based on Era?"
+-- @gui label="RED SEAD Plane Templates" editor="checkboxTable" rowLabel="comment" confirmSetRowsByEra="Select aircraft templates based on Era?" installPolicy="replaceTable"
 RedSeadPlaneEnabled = {
     ["RED_JF17_SEAD_LD10x2_PL5EIIx2_SPJ_TANKSx2_1SHIP"] = true, -- eras=Modern; JF-17 SEAD [Modern]
     ["RED_JF17_SEAD_LD10x2_PL5EIIx2_SPJ_TANKSx2_2SHIP"] = true, -- eras=Modern; 2x JF-17 SEAD [Modern]
@@ -318,13 +321,16 @@ RedSeadPlaneEnabled = {
     ["RED_SU17M4_SEAD_KH25MRx4_R60x2_TANKSx2_2SHIP"] = false, -- eras=Vietnam|Coldwar; 2x Su-17M4 SEAD [CW/VN]
 }
 
--- @gui label="BLUE SEAD Plane Templates" editor="checkboxTable" rowLabel="comment" confirmSetRowsByEra="Select aircraft templates based on Era?"
+-- @gui label="BLUE SEAD Plane Templates" editor="checkboxTable" rowLabel="comment" confirmSetRowsByEra="Select aircraft templates based on Era?" installPolicy="replaceTable"
 BlueSeadPlaneEnabled = {
+    ["BLUE_F16_SEAD_AGM88Cx4_AIM120Cx2_AIM9Xx2"] = true, -- eras=Modern; 2x F-16C SEAD [Modern]
+    ["BLUE_F18_SEAD_AGM88Cx2_ADM141Ax6_AIM120Cx1_AIM9Xx2"] = true, -- eras=Modern; 2x F/A-18C SEAD [Modern]
+    ["BLUE_F18_SEAD_AGM88Cx2_AGM154CAx4_AIM120Cx1_AIM9Xx2"] = true, -- eras=Modern; 2x F/A-18C SEAD [Modern]
     ["BLUE_F4E_SEAD_AGM45Ax4_AIM7E2x3_TANK600_ALQ131"] = false, -- eras=Vietnam|Coldwar; 2x F-4E Shrike SEAD [VN/CW]
     ["BLUE_F100D_SEAD_AGM45Ax2_CBU7x2_TANKSx2_2SHIP"] = false, -- eras=Vietnam; 2x F-100D SEAD [VN]
 }
 
--- @gui label="RED Runway Strike Templates" editor="checkboxTable" rowLabel="comment" confirmSetRowsByEra="Select aircraft templates based on Era?"
+-- @gui label="RED Runway Strike Templates" editor="checkboxTable" rowLabel="comment" confirmSetRowsByEra="Select aircraft templates based on Era?" installPolicy="replaceTable"
 RedRunwayStrikePlaneEnabled = {
     ["RED_SU33_RUNWAY_BETAB500x4_R27ERx4_R73x2_3SHIP"] = true, -- eras=Modern; 3x Su-33 Runway [Modern]
     ["RED_MIG27K_RUNWAY_BETAB500x2_FAB250x2_R60Mx4_3SHIP"] = true, -- eras=Modern|Coldwar; 3x MiG-27K Runway [Modern/CW]
@@ -332,29 +338,31 @@ RedRunwayStrikePlaneEnabled = {
     ["RED_MIG21BIS_RUNWAY_BETAB500x2_R3Rx2_TANK490_3SHIP"] = true, -- eras=Vietnam; 3x MiG-21bis BetAB Runway [VN]
 }
 
--- @gui label="RED Enemy Strike Plane Templates" editor="checkboxTable" rowLabel="comment" confirmSetRowsByEra="Select aircraft templates based on Era?"
+-- @gui label="RED Enemy Strike Plane Templates" editor="checkboxTable" rowLabel="comment" confirmSetRowsByEra="Select aircraft templates based on Era?" installPolicy="replaceTable"
 RedEnemyStrikePlaneEnabled = {
     ["evt-attack"] = true, -- eras=Modern; 3x Su-34 Enemy Strike (each: 4x Kh-29T, 2x Kh-31P, 2x R-27ER, 2x R-73, 2x L-175V ECM) [Modern]
     ["evt-attackcw"] = true, -- eras=Modern|Coldwar; 3x Su-24M Enemy Strike (each: 2x Kh-25MPU, 2x KAB-500Kr, 2x R-60M, L-081 ELINT) [Modern/CW]
 }
 
--- @gui label="RED CAS Helo Templates" editor="checkboxTable" rowLabel="comment" confirmSetRowsByEra="Select aircraft templates based on Era?"
+-- @gui label="RED CAS Helo Templates" editor="checkboxTable" rowLabel="comment" confirmSetRowsByEra="Select aircraft templates based on Era?" installPolicy="replaceTable"
 RedCasHeloEnabled = {
     ["RED_MI24P_CAS_9M114x8_B8x2_1SHIP"] = true, -- eras=Modern; Mi-24P CAS [Modern]
     ["RED_MI24P_CAS_9M114x8_B8x2_2SHIP"] = true, -- eras=Modern; 2x Mi-24P CAS [Modern]
+    ["RED_MI24P_CAS_B13Lx2_B8x2_1SHIP"] = true, -- eras=Modern; Mi-24P B-13L/B-8 rocket CAS [Modern]
+    ["RED_MI24P_CAS_B13Lx2_B8x2_2SHIP"] = true, -- eras=Modern; 2x Mi-24P B-13L/B-8 rocket CAS [Modern]
     ["RED_MI28N_CAS_9M120x8_9M120Fx8_B13x2_1SHIP"] = false, -- eras=Modern; Mi-28N CAS [Modern]
     ["RED_MI28N_CAS_9M114x8_B8x2_1SHIP"] = false, -- eras=Modern; Mi-28N CAS [Modern]
     ["RED_MI28N_CAS_9M114x8_B8x2_2SHIP"] = false, -- eras=Modern; 2x Mi-28N CAS [Modern]
     ["RED_MI28N_CAS_9M120x8_9M120Fx8_B13x2_2SHIP"] = false, -- eras=Modern; 2x Mi-28N CAS [Modern]
-    ["RED_MI24V_CAS_B8x4_1SHIP"] = false, -- eras=Coldwar; Mi-24V CAS [CW]
-    ["RED_MI24V_CAS_B8x4_2SHIP"] = false, -- eras=Coldwar; 2x Mi-24V CAS [CW]
-    ["RED_MI8_CAS_FAB100x6_1SHIP"] = false, -- eras=Vietnam|Coldwar; Mi-8 FAB-100 CAS [VN/CW]
-    ["RED_MI8_CAS_FAB100x6_2SHIP"] = false, -- eras=Vietnam|Coldwar; 2x Mi-8 FAB-100 CAS [VN/CW]
+    ["RED_MI24V_CAS_B8x2_B13x2_1SHIP"] = false, -- eras=Coldwar; Mi-24V CAS [CW]
+    ["RED_MI24V_CAS_B8x2_B13x2_2SHIP"] = false, -- eras=Coldwar; 2x Mi-24V CAS [CW]
+    ["RED_MI8_CAS_FAB100x4_UPK23x2_KORD_PKT_1SHIP"] = false, -- eras=Vietnam|Coldwar; Mi-8 FAB-100/UPK-23 gunpod CAS [VN/CW]
+    ["RED_MI8_CAS_FAB100x4_UPK23x2_KORD_PKT_2SHIP"] = false, -- eras=Vietnam|Coldwar; 2x Mi-8 FAB-100/UPK-23 gunpod CAS [VN/CW]
     ["RED_MI8_CAS_GUV_YAKB_GSHPx2_KORD_PKT_1SHIP"] = false, -- eras=Vietnam|Coldwar; Mi-8 gunpod CAS [VN/CW]
     ["RED_MI8_CAS_GUV_YAKB_GSHPx2_KORD_PKT_2SHIP"] = false, -- eras=Vietnam|Coldwar; 2x Mi-8 gunpod CAS [VN/CW]
 }
 
--- @gui label="BLUE CAS Helo Templates" editor="checkboxTable" rowLabel="comment" confirmSetRowsByEra="Select aircraft templates based on Era?"
+-- @gui label="BLUE CAS Helo Templates" editor="checkboxTable" rowLabel="comment" confirmSetRowsByEra="Select aircraft templates based on Era?" installPolicy="replaceTable"
 BlueCasHeloEnabled = {
     ["BLUE_AH64D_CAS_AGM114Kx4_AGM114Lx4_M261x2_FCR_1SHIP"] = true, -- eras=Modern; AH-64D CAS [Modern]
     ["BLUE_AH64D_CAS_AGM114Kx4_AGM114Lx4_M261x2_FCR_2SHIP"] = true, -- eras=Modern; 2x AH-64D CAS [Modern]
@@ -369,13 +377,13 @@ BlueCasHeloEnabled = {
     ["BLUE_UH1H_CAS_XM158x2_M134x3_M60_2SHIP"] = false, -- eras=Coldwar|Vietnam; 2x UH-1H CAS [CW/VN]
 }
 
--- @gui label="RED Supply Helo Templates" editor="checkboxTable" rowLabel="comment" confirmSetRowsByEra="Select aircraft templates based on Era?"
+-- @gui label="RED Supply Helo Templates" editor="checkboxTable" rowLabel="comment" confirmSetRowsByEra="Select aircraft templates based on Era?" installPolicy="replaceTable"
 RedSupplyHeloEnabled = {
     ["RED_MI8_SUPPLY_KORD"] = true, -- eras=Modern|Coldwar|Vietnam; Mi-8 Supply [All]
     ["RED_MI8_SUPPLY_KORD_PKT"] = true, -- eras=Modern|Coldwar|Vietnam; Mi-8 Supply [All]
 }
 
--- @gui label="BLUE Supply Helo Templates" editor="checkboxTable" rowLabel="comment" confirmSetRowsByEra="Select aircraft templates based on Era?"
+-- @gui label="BLUE Supply Helo Templates" editor="checkboxTable" rowLabel="comment" confirmSetRowsByEra="Select aircraft templates based on Era?" installPolicy="replaceTable"
 BlueSupplyHeloEnabled = {
 	["BLUE_CH47_SUPPLY_M240Hx2"] = true, -- eras=Modern|Coldwar; CH-47 Supply [Modern/CW]
 	["BLUE_CH47_SUPPLY_M60Dx3"] = true, -- eras=Modern|Coldwar; CH-47 Supply [Modern/CW]
@@ -549,6 +557,16 @@ ChanceAiAttackHelo = 0
 
 -- Hunter is when you do a lot of damage to enemy units (both planes and ground), RED dispatches a 2-ship to hunt you down.
 EnableHunter = true
+
+-- Lets the Director remember recent RED sortie and regular-supply outcomes and use them as soft planning influences.
+-- This does not add groups, force launches, bypass cooldowns, or block a route.
+-- @gui label="Director Battlefield Intelligence"
+GlobalSettings.directorBattlefieldIntelligenceEnabled = true
+
+-- Lets the Director remember recent air-combat results and use them as a small influence when redirecting an existing RED CAP.
+-- This does not add aircraft or bypass normal CAP limits, cooldowns, or safety checks.
+-- @gui label="Director Air-Combat Intelligence"
+GlobalSettings.directorAirCombatIntelligenceEnabled = true
 
 -- Valid values: "easy" | "medium" | "hard"
 -- Here, you can adjust how many cap should spawn. medium, is the default (Balanaced)
@@ -916,22 +934,51 @@ CallsignOverrides = {
 -- Use 0 for the same altitude, or 1000 through 10000 in 1000-foot steps.
 -- @gui installPolicy="mergeRows"
 EscortTypeByPlayerType = {
-    ["C-130J-30"]      = { true, 2, 10000 },
+    ["C-130J-30"]      = { true, 1, 10000 },
     ["AV8BNA"]         = { true, 2, 10000 },
     ["A-10C_2"]        = { true, 2, 10000 },
     ["A-10C"]          = { true, 2, 10000 },
     ["A-10A"]          = { true, 2, 10000 },
     ["Hercules"]       = { true, 2, 10000 },
     ["F-15ESE"]        = { true, 2, 10000 },
-    ["AJS37"]          = { true, 2, 10000 },
-    ["MiG-29 Fulcrum"] = { false, 2, 10000 },
-    ["F-16C_50"]       = { false, 2, 10000 },
-    ["FA-18C_hornet"]  = { false, 2, 10000 },
-    ["MiG-21Bis"]      = { false, 3, 10000 },
+    ["AJS37"]          = { true, 3, 10000 },
+    ["MiG-29 Fulcrum"] = { true, 3, 10000 },
+    ["F-16C_50"]       = { true, 2, 10000 },
+    ["FA-18C_hornet"]  = { true, 1, 10000 },
+    ["MiG-21Bis"]      = { true, 3, 10000 },
     ["Su-25T"]         = { true, 3, 10000 },
     ["Su-25"]          = { true, 3, 10000 },
-    ["M-2000C"]        = { false, 2, 10000 },
-    ["Bronco-OV-10A"]  = { false, 1, 10000 },
+    ["M-2000C"]        = { true, 3, 10000 },
+    ["Bronco-OV-10A"]  = { true, 2, 10000 },
+    ["Ka-50"] = { true, 3, 10000 },
+    ["Ka-50_3"] = { true, 3, 10000 },
+    ["Mi-24P"] = { true, 3, 10000 },
+    ["SA342L"] = { true, 3, 10000 },
+    ["SA342M"] = { true, 3, 10000 },
+    ["SA342Minigun"] = { true, 3, 10000 },
+    ["SA342Mistral"] = { true, 3, 10000 },
+    ["UH-60L"] = { true, 2, 10000 },
+    ["UH-60L_DAP"] = { true, 2, 10000 },
+    ["AH-64D_BLK_II"] = { true, 2, 10000 },
+    ["UH-1H"] = { true, 2, 10000 },
+    ["Mi-8MT"] = { true, 3, 10000 },
+    ["OH58D"] = { true, 2, 10000 },
+    ["CH-47Fbl1"] = { true, 2, 10000 },
+    ["P-51D-30-NA"] = { true, 2, 10000 },
+    ["SpitfireLFMkIX"] = { true, 2, 10000 },
+    ["MosquitoFBMkVI"] = { true, 2, 10000 },
+    ["Bf-109K-4"] = { true, 3, 10000 },
+    ["FW-190A8"] = { true, 3, 10000 },
+    ["FW-190D9"] = { true, 3, 10000 },
+    ["F4U-1D"] = { true, 2, 10000 },
+    ["F4U-1D_CW"] = { true, 2, 10000 },
+    ["I-16"] = { true, 3, 10000 },
+    ["P-47D-30"] = { true, 2, 10000 },
+    ["P-47D-30bl1"] = { true, 2, 10000 },
+    ["P-47D-40"] = { true, 2, 10000 },
+    ["P-51D"] = { true, 2, 10000 },
+    ["SpitfireLFMklXCW"] = { true, 2, 10000 },
+    ["La-7"] = { true, 3, 10000 },
 }
 
 -- Plane escort option for takeoff from the ground.
@@ -991,6 +1038,13 @@ GlobalSettings.supplyDifficultyScaling = { [1]=1.0, [2]=1.0 }
 -- @gui label="Repair Time Scaling" editor="sideMultiplier" min="0.10" max="5.00" step="0.05" timePreviewRed="Unit:60 | SR/TR/STR:180 | Maximum:1200" timePreviewBlue="Normal base:900 | [WH] base:300 | Expedited base:0 | Unit:120 | SR/TR/STR:180 | Maximum:1200"
 GlobalSettings.repairDifficultyScaling = { [1]=1, [2]=1 }
 
+-- Extra time for Red repairs and construction when fewer than 2 eligible Blue CAS players are present.
+-- Uses the cached CAS player list, excluding BlueCasCountIgnoreTypes, once when the job starts.
+-- Adds to the scaled starting duration; later damage-driven timer updates remain unchanged.
+-- 0 disables the extra time (default). Maximum 50% extra time. Blue and supply travel times are unchanged.
+-- @gui label="Extra Red Repair Time — Low Player Count %" validValues="Disabled=0 | 5%=5 | 10%=10 | 15%=15 | 20%=20 | 25%=25 | 30%=30 | 35%=35 | 40%=40 | 45%=45 | 50%=50"
+ExtraRedRepairTimeLowPlayerCountPercent = 0
+
 -- If true, player-picked Zone supplies consume one ready supply package from the campaign zone.
 -- Returned or removed cargo restores that package; destroyed or delivered cargo does not.
 -- Carrier and dynamic FARP pickups remain unlimited because they do not hold campaign-zone stock.
@@ -1041,21 +1095,21 @@ AllowedToCarrySupplies = {
     ["A-10C_2"] = true,
     ["A-10A"] = true,
     ["A-10C"] = true,
-    ['P-51D-30-NA'] = true,
-    ['SpitfireLFMkIX'] = true,
-    ['MosquitoFBMkVI'] = true,
-    ['Bf-109K-4'] = true,
-    ['FW-190A8'] = true,
-    ['FW-190D9'] = true,
-    ['F4U-1D'] = true,
-    ['F4U-1D_CW'] = true,
-    ['I-16'] = true,
-    ['P-47D-30'] = true,
-    ['P-47D-30bl1'] = true,
-    ['P-47D-40'] = true,
-    ['P-51D'] = true,
-    ['SpitfireLFMkIXCW'] = true,
-    ['La-7'] = true,
+    ["P-51D-30-NA"] = true,
+    ["SpitfireLFMkIX"] = true,
+    ["MosquitoFBMkVI"] = true,
+    ["Bf-109K-4"] = true,
+    ["FW-190A8"] = true,
+    ["FW-190D9"] = true,
+    ["F4U-1D"] = true,
+    ["F4U-1D_CW"] = true,
+    ["I-16"] = true,
+    ["P-47D-30"] = true,
+    ["P-47D-30bl1"] = true,
+    ["P-47D-40"] = true,
+    ["P-51D"] = true,
+    ["SpitfireLFMkIXCW"] = true,
+    ["La-7"] = true,
 }
 
 -- If false, the "Supplies not loaded" warning sound is disabled.
@@ -1094,21 +1148,21 @@ ZoneSupplyTakeoffWarningTypes = {
     ["A-10C_2"] = true,
     ["A-10A"] = true,
     ["A-10C"] = true,
-    ['P-51D-30-NA'] = true,
-    ['SpitfireLFMkIX'] = true,
-    ['MosquitoFBMkVI'] = true,
-    ['Bf-109K-4'] = true,
-    ['FW-190A8'] = true,
-    ['FW-190D9'] = true,
-    ['F4U-1D'] = true,
-    ['F4U-1D_CW'] = true,
-    ['I-16'] = true,
-    ['P-47D-30'] = true,
-    ['P-47D-30bl1'] = true,
-    ['P-47D-40'] = true,
-    ['P-51D'] = true,
-    ['SpitfireLFMkIXCW'] = true,
-    ['La-7'] = true,
+    ["P-51D-30-NA"] = true,
+    ["SpitfireLFMkIX"] = true,
+    ["MosquitoFBMkVI"] = true,
+    ["Bf-109K-4"] = true,
+    ["FW-190A8"] = true,
+    ["FW-190D9"] = true,
+    ["F4U-1D"] = true,
+    ["F4U-1D_CW"] = true,
+    ["I-16"] = true,
+    ["P-47D-30"] = true,
+    ["P-47D-30bl1"] = true,
+    ["P-47D-40"] = true,
+    ["P-51D"] = true,
+    ["SpitfireLFMkIXCW"] = true,
+    ["La-7"] = true,
 }
 
 -- If true, smart weapons found in the WarehouseWeaponCaps table at the bottom, will be HALF what we add to the warehouse.
@@ -1123,6 +1177,11 @@ WarehouseWeaponCaps = {
 -- ============================================================================
 -- Shop / Rewards
 -- ============================================================================
+
+-- Get extra reward if player keeps the same aircraft after a successful credits redeem and then another sortie with another credits redeem.
+-- Percentage of extra credits. 0 disables the reward, 10 is the default, and 50 is the maximum.
+-- @gui label="Same Aircraft Extra Reward %" validValues="Disabled=0 | 5%=5 | 10%=10 | 15%=15 | 20%=20 | 25%=25 | 30%=30 | 35%=35 | 40%=40 | 45%=45 | 50%=50"
+TurnaroundRewardPercent = 10
 
 -- Advance Capture becomes available when an enemy zone has this percent or less of its upgrade groups remaining.
 -- Percent of upgrade groups remaining before Advance Capture appears.
@@ -1157,6 +1216,9 @@ ShopPrices = {
 	artillery     = 100,  -- Deploy artillery
 	recon         = 50,   -- Deploy recon group
 	airdef        = 150,  -- Deploy air defence
+	calav         = 100,  -- Deploy LAV-25 group
+	camgs         = 100,  -- Deploy M1128 MGS group
+	cadragoon     = 100,  -- Deploy M1296 Dragoon group
 	capture       = 500,  -- Capture neutral zone
 	advancecapture = 500, -- Advance capture pressured enemy zone
 	intel         = 150,  -- Satellite Intel (60 min)
@@ -1209,6 +1271,9 @@ ShopRankRequirements = {
 	artillery      = 3,  -- Deploy artillery
 	recon          = 3,  -- Deploy recon group
 	airdef         = 3,  -- Deploy air defence
+	calav          = 3,  -- Deploy LAV-25 group
+	camgs          = 3,  -- Deploy M1128 MGS group
+	cadragoon      = 3,  -- Deploy M1296 Dragoon group
 	["9lineam"]    = 1,  -- Jtac 9line AM
 	["9linefm"]    = 1,  -- Jtac 9line FM
 	cruisemsl      = 10, -- Cruise Missile Strike -- This does not exist in some maps.
@@ -1221,6 +1286,8 @@ ShopRankRequirements = {
 RewardContribution = {
 	infantry         = 10,
 	ground           = 10,
+	ctldGround       = 10, -- CTLD Units built by player reward Ground kill
+	ctldAir          = 20, -- CTLD Units built by player reward Air kill
 	sam              = 30,
 	airplane         = 50,
 	ship             = 200,
@@ -1499,6 +1566,8 @@ AllowedFlightTimeReward  = {
 	['CH-47Fbl1'] = true,
 	['Hercules'] = true,
     ["A-10C_2"] = true,
+    ["A-10C"] = true,
+    ["AJS37"] = true,
 }
 
 -- ============================================================================
@@ -1806,6 +1875,9 @@ allowedPlanesRed = {
     "P-51D",
     "SpitfireLFMkIXCW",
     "La-7",
+    --"F/A-18A",
+    --"Ka-50_3",
+    --"Ka-50",
     "A-10C_2",
     "Mirage-F1M-CE",
     "Mirage-F1M-EE",
@@ -2004,6 +2076,8 @@ restrictedWeapons = {
 	"weapons.missiles.AGR_20A", -- laser rockets
     "weapons.missiles.AGM_154C",
     "weapons.bombs.GBU_24",
+    --"weapons.containers.AAQ-28_LITENING",
+    --"weapons.containers.AN_AAQ_33",
     "weapons.missiles.AGM_65G",
     "weapons.missiles.Vikhr_M",
     "weapons.missiles.BK90_MJ1",

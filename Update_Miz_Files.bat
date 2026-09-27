@@ -2,7 +2,7 @@
 rem ===========================================================================
 rem  Fix-RequiredModules.bat
 rem
-rem  Does two independent jobs to every .miz found under this file's folder
+rem  Does three independent jobs to every .miz found under this file's folder
 rem  (recursively), in a single rewrite of each archive:
 rem
 rem  1. requiredModules  - clears the ["requiredModules"] table in the archive's
@@ -31,6 +31,19 @@ rem     disk right now, byte for byte, whatever that happens to be - including
 rem     a hand-edited or half-experimented-on one. Compiling is yours to do,
 rem     when you decide to, and nothing here will do it behind your back.
 rem
+rem  3. micclick.ogg     - replaces the sound in l10n\DEFAULT with the copy
+rem     sitting beside this script:
+rem         micclick.ogg
+rem     Anchored to the script's own folder, not to --src: it is a sound file,
+rem     not something the customizations repo builds.
+rem
+rem     Same replace-only rule as the bundle, for the same reason: mapResource
+rem     ties the file NAME to the resource key the mission's sound trigger
+rem     plays, so a file dropped in with no key would never be heard. Same name
+rem     in, same name out. A .miz without the entry is reported and left alone;
+rem     one whose micclick.ogg is missing from mapResource is flagged rather
+rem     than pointlessly rewritten.
+rem
 rem  The .miz is edited as a zip in place - never renamed to .zip, never
 rem  unpacked to a folder. Only the entries being changed are rewritten; every
 rem  other resource is copied across as-is.
@@ -43,8 +56,9 @@ rem  Usage:
 rem      Fix-RequiredModules.bat                       both jobs, keep backups
 rem      Fix-RequiredModules.bat --dry-run             report only, change nothing
 rem      Fix-RequiredModules.bat --no-backup           fix without making backups
-rem      Fix-RequiredModules.bat --no-customizations   requiredModules only
-rem      Fix-RequiredModules.bat --no-modules          customizations only
+rem      Fix-RequiredModules.bat --no-customizations   skip the bundle job
+rem      Fix-RequiredModules.bat --no-modules          skip the requiredModules job
+rem      Fix-RequiredModules.bat --no-sounds           skip the micclick.ogg job
 rem      Fix-RequiredModules.bat --src "D:\repo"       take bundles from elsewhere
 rem      Fix-RequiredModules.bat "D:\some\dir"         scan a different folder
 rem ===========================================================================
@@ -73,6 +87,7 @@ $dryRun    = $false
 $noBackup  = $false
 $doModules = $true
 $doCustom  = $true
+$doSounds  = $true
 
 $scriptDir = Split-Path -Parent $env:MIZ_SELF
 $root      = $scriptDir
@@ -87,6 +102,7 @@ if ($rest -match '(?i)(^|\s)(--?|/)dry-run(\s|$)')          { $dryRun    = $true
 if ($rest -match '(?i)(^|\s)(--?|/)no-backup(\s|$)')        { $noBackup  = $true;  $rest = $rest -replace '(?i)(--?|/)no-backup','' }
 if ($rest -match '(?i)(^|\s)(--?|/)no-customizations(\s|$)'){ $doCustom  = $false; $rest = $rest -replace '(?i)(--?|/)no-customizations','' }
 if ($rest -match '(?i)(^|\s)(--?|/)no-modules(\s|$)')       { $doModules = $false; $rest = $rest -replace '(?i)(--?|/)no-modules','' }
+if ($rest -match '(?i)(^|\s)(--?|/)no-sounds(\s|$)')        { $doSounds  = $false; $rest = $rest -replace '(?i)(--?|/)no-sounds','' }
 
 if ($rest -match '(?i)(^|\s)(--?|/)src[=\s]+(?:"([^"]+)"|(\S+))') {
     $srcDir = if ($Matches[3]) { $Matches[3] } else { $Matches[4] }
@@ -96,8 +112,8 @@ if ($rest -match '(?i)(^|\s)(--?|/)src[=\s]+(?:"([^"]+)"|(\S+))') {
 $rest = $rest.Trim().Trim('"').Trim()
 if ($rest) { $root = $rest }
 
-if (-not $doModules -and -not $doCustom) {
-    Write-Host 'Nothing to do: --no-modules and --no-customizations cancel each other out.' -ForegroundColor Red
+if (-not $doModules -and -not $doCustom -and -not $doSounds) {
+    Write-Host 'Nothing to do: every job was switched off.' -ForegroundColor Red
     exit 1
 }
 
@@ -132,6 +148,23 @@ if ($doCustom) {
         # Bytes in, bytes out: whatever is in this file is what ships.
         $bundles["l10n/DEFAULT/$name"] = [IO.File]::ReadAllBytes($p)
     }
+}
+
+# Nothing builds the sound, so it lives beside this script rather than in the
+# customizations repo, and --src does not move it. Read up front for the same
+# reason as the bundles above.
+$soundEntry = 'l10n/DEFAULT/micclick.ogg'
+$soundPath  = $null
+$soundBytes = $null
+if ($doSounds) {
+    $soundPath = Join-Path $scriptDir 'micclick.ogg'
+    if (-not (Test-Path -LiteralPath $soundPath -PathType Leaf)) {
+        Write-Host "Missing sound: $soundPath" -ForegroundColor Red
+        Write-Host 'Put the file next to this script, or use --no-sounds to skip that job.'
+        exit 1
+    }
+    $soundPath  = (Resolve-Path -LiteralPath $soundPath).Path
+    $soundBytes = [IO.File]::ReadAllBytes($soundPath)
 }
 
 # ------------------------------------------------------------------ helpers --
@@ -177,7 +210,7 @@ function Read-ZipEntryBytes {
 # One open of the archive per mission, returning everything the main loop needs
 # to decide what - if anything - has to change.
 function Read-MizState {
-    param([string]$Path, [bool]$IsWWII)
+    param([string]$Path, [bool]$IsWWII, [string]$SoundEntry)
 
     $utf8 = New-Object Text.UTF8Encoding($false)
     $zip  = [IO.Compression.ZipFile]::OpenRead($Path)
@@ -200,6 +233,9 @@ function Read-MizState {
             BundleBytes  = Read-ZipEntryBytes -Zip $zip -Name $bundleName
             BundleMapped = ($null -ne $mapText) -and
                            $mapText.Contains('"' + (Split-Path -Leaf $bundleName) + '"')
+            SoundBytes   = Read-ZipEntryBytes -Zip $zip -Name $SoundEntry
+            SoundMapped  = ($null -ne $mapText) -and
+                           $mapText.Contains('"' + (Split-Path -Leaf $SoundEntry) + '"')
         }
     } finally { $zip.Dispose() }
 }
@@ -283,11 +319,13 @@ $files = @(
 $jobs = @()
 if ($doModules) { $jobs += 'requiredModules' }
 if ($doCustom)  { $jobs += 'customizations' }
+if ($doSounds)  { $jobs += 'micclick.ogg' }
 
 Write-Host ''
 Write-Host "Root   : $root"
 Write-Host "Jobs   : $($jobs -join ' + ')"
 if ($doCustom) { Write-Host "Source : $srcDir" }
+if ($doSounds) { Write-Host "Sound  : $soundPath" }
 Write-Host "Found  : $($files.Count) .miz file(s)"
 if ($dryRun)       { Write-Host 'Mode   : DRY RUN - nothing will be written' -ForegroundColor Yellow }
 elseif ($noBackup) { Write-Host 'Mode   : edit in place, NO BACKUPS' -ForegroundColor Yellow }
@@ -308,7 +346,7 @@ foreach ($file in $files) {
             $failed++; continue
         }
 
-        $state = Read-MizState -Path $file.FullName -IsWWII $isWWII
+        $state = Read-MizState -Path $file.FullName -IsWWII $isWWII -SoundEntry $soundEntry
 
         # Replacements accumulate across both jobs and are written in one pass,
         # so a mission needing both changes is still rebuilt only once.
@@ -375,6 +413,31 @@ foreach ($file in $files) {
             else {
                 $repl[$state.BundleName] = $new
                 $notes += ("{0}: {1} -> {2} bytes" -f $short, $state.BundleBytes.Length, $new.Length)
+            }
+        }
+
+        # -- job 3: micclick.ogg, in l10n/DEFAULT -----------------------------
+        if ($doSounds) {
+            $short = Split-Path -Leaf $soundEntry
+
+            if ($null -eq $state.SoundBytes) {
+                # Not one of ours, or a mission that never had the sound. Adding
+                # it would leave a file with no resource key, which DCS would
+                # never play - so say so and leave it alone.
+                $notes += "$short not present in archive - not added"
+            }
+            elseif (-not $state.SoundMapped) {
+                Write-Host "$tag PROBLEM $label" -ForegroundColor Red
+                Write-Host "         $short is in the archive but not named in mapResource" -ForegroundColor Red
+                Write-Host "         DCS is not playing it - sound left untouched, fix the mission" -ForegroundColor Red
+                $jobFailed = $true
+            }
+            elseif (Test-BytesEqual $state.SoundBytes $soundBytes) {
+                # already current, nothing to do
+            }
+            else {
+                $repl[$soundEntry] = $soundBytes
+                $notes += ("{0}: {1} -> {2} bytes" -f $short, $state.SoundBytes.Length, $soundBytes.Length)
             }
         }
 

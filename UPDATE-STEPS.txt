@@ -1,0 +1,23 @@
+FootholdConfigTrackedScalarNames should include at end of table:
+
+```
+"ForceNoJHMCS",
+"JhmcsGracePeriod",
+"TravelPodPenaltyWeight",
+```
+
+AFTER InvisibleA10 = VALUE
+
+-- In iraq war and earlier eras the f16 and f18 does not have JHMCS, so this option disables it for all players.
+-- If set to true, do not forget to update the templates for your mission to remove JHMCS from the aircrafts.
+-- On takeoff, the player will receive a warning to land within 3 minutes to remove the JHMCS.
+-- If they do not land within 3 minutes, the player will be returned to spectator.
+-- This will NOT affect the a-10c_2. It can not be enforced with it. For era accuracy only allow the a-10c at the latest.
+ForceNoJHMCS = false -- If true, disables JHMCS for all viper and hornet pilots (RED and BLUE).
+
+JhmcsGracePeriod = 180 -- If ForceNoJHMCS is true, this is the grace period in seconds before the player is returned to spectator.
+
+AFTER WarningNoSupplies = VALUE
+
+-- Penalty weight for aircraft that require traveling pods to carry supplies.
+TravelPodPenaltyWeight = 1 -- 0 = 0 lbs, 0.5 = 1000 lbs, 1.0 = 2000 lbs, 2.0 = 4000 lbs
