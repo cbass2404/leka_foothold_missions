@@ -75,6 +75,7 @@ FootholdConfigTrackedTableNames = {
 }
 -- Add new top-level scalar settings here so an omitted external setting triggers the warning.
 FootholdConfigTrackedScalarNames = {
+    "ewrs_enabled",
     "PlayerZoneSuppliesConsumeStock",
     "RadioMenuStopSupplies",
     "ZoneCaptureBuildSeconds",
@@ -385,10 +386,8 @@ RedSupplyHeloEnabled = {
 
 -- @gui label="BLUE Supply Helo Templates" editor="checkboxTable" rowLabel="comment" confirmSetRowsByEra="Select aircraft templates based on Era?" installPolicy="replaceTable"
 BlueSupplyHeloEnabled = {
-	["BLUE_CH47_SUPPLY_M240Hx2"] = true, -- eras=Modern|Coldwar; CH-47 Supply [Modern/CW]
-	["BLUE_CH47_SUPPLY_M60Dx3"] = true, -- eras=Modern|Coldwar; CH-47 Supply [Modern/CW]
-    ["BLUE_UH60A_SUPPLY_UNARMED"] = true, -- eras=Modern|Coldwar; UH-60A Supply [Modern/CW]
-    ["BLUE_UH1H_SUPPLY_UNARMED"] = true, -- eras=Coldwar|Vietnam; UH-1H Supply [CW/VN]
+	["BLUE_CH47_SUPPLY_M240Hx2"] = true, -- eras=Modern|Coldwar|Vietnam; CH-47 Supply [All]
+	["BLUE_CH47_SUPPLY_M60Dx3"] = true, -- eras=Modern|Coldwar|Vietnam; CH-47 Supply [All]
 }
 
 -- ============================================================================
@@ -1225,6 +1224,7 @@ ShopPrices = {
 	zinf          = 500,  -- Add infantry squad to zone
 	zsam          = 2000, -- Add Hawk/Nasams system to a zone
 	zlogc         = 2000, -- Make a zone logistic center
+	zwhrepair     = 2000, -- Repair warehouse building (30 minutes)
 	zsup3         = 750,  -- Add 3 supplies to a zone
 	zwh50         = 500,  -- Resupply warehouse with 50
 	zarm          = 1000, -- Add armor group to a zone
@@ -1281,7 +1281,7 @@ ShopRankRequirements = {
     zhimars        = 8,  -- Add HIMARS to a zone
 }
 
--- Earning per kill by target type.
+-- Earnings per target/event. Enemy pilot capture pays on delivery to a friendly zone.
 -- @gui installPolicy="mergeRows"
 RewardContribution = {
 	infantry         = 10,
@@ -1294,6 +1294,7 @@ RewardContribution = {
 	helicopter       = 50,
 	crate            = 100,
 	rescue           = 200,
+	enemyPilotCapture = 200, -- Per enemy pilot delivered; 0 disables capture credits, not Intel or statistics.
     structure        = 100,
 	["Zone upgrade"] = 100,
 	["Zone capture"] = 200,
@@ -1581,6 +1582,9 @@ ArcoSpeed = 286 -- orbit speed for arco is hardcoded at 280, otherwise strange t
 -- ============================================================================
 -- EWRS
 -- ============================================================================
+
+-- @gui label="Enable EWRS" validValues="Enabled=true | Disabled=false"
+ewrs_enabled = true -- Enable EWRS reports and F10 menus. Requires mission restart; load the config before EWRS.lua.
 
 -- @gui validValues="Style 1=1 | Style 2=2"
 ewrs_defaultReportStyle = 1 -- Default EWRS report format. Style 1 keeps the current format. Style 2 uses compact separator lines. Players can change this via the F10 EWRS menu.
