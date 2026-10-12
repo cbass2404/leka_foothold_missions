@@ -1180,7 +1180,7 @@ WarehouseWeaponCaps = {
 -- Get extra reward if player keeps the same aircraft after a successful credits redeem and then another sortie with another credits redeem.
 -- Percentage of extra credits. 0 disables the reward, 10 is the default, and 50 is the maximum.
 -- @gui label="Same Aircraft Extra Reward %" validValues="Disabled=0 | 5%=5 | 10%=10 | 15%=15 | 20%=20 | 25%=25 | 30%=30 | 35%=35 | 40%=40 | 45%=45 | 50%=50"
-TurnaroundRewardPercent = 10
+TurnaroundRewardPercent = 20
 
 -- Advance Capture becomes available when an enemy zone has this percent or less of its upgrade groups remaining.
 -- Percent of upgrade groups remaining before Advance Capture appears.
@@ -1222,7 +1222,13 @@ ShopPrices = {
 	advancecapture = 500, -- Advance capture pressured enemy zone
 	intel         = 150,  -- Satellite Intel (60 min)
 	zinf          = 500,  -- Add infantry squad to zone
-	zsam          = 2000, -- Add Hawk/Nasams system to a zone
+	zhawk         = 2000, -- HAWK zone upgrade
+	zavenger      = 1000, -- Avenger zone upgrade
+	zroland       = 1000, -- Roland zone upgrade
+	zgepard       = 750, -- Gepard zone upgrade
+	zvulcan       = 500, -- Vulcan zone upgrade
+	zcram         = 1500, -- C-RAM zone upgrade
+	zsam          = 2000, -- Add NASAMS system to a zone
 	zlogc         = 2000, -- Make a zone logistic center
 	zwhrepair     = 2000, -- Repair warehouse building (30 minutes)
 	zsup3         = 750,  -- Add 3 supplies to a zone
@@ -1260,7 +1266,13 @@ ShopRankRequirements = {
 	supplies       = 6,  -- Fully Upgrade Friendly Zone
 	zinf           = 5,  -- Add infantry squad to zone
 	zarm           = 7,  -- Add armor group to a zone
-	zsam           = 6,  -- Add Hawk/Nasams system to a zone
+	zhawk         = 6, -- HAWK zone upgrade
+	zavenger      = 5, -- Avenger zone upgrade
+	zroland       = 5, -- Roland zone upgrade
+	zgepard       = 4, -- Gepard zone upgrade
+	zvulcan       = 3, -- Vulcan zone upgrade
+	zcram         = 6, -- C-RAM zone upgrade
+	zsam          = 6,  -- Add NASAMS system to a zone
 	zlogc          = 1,  -- Make a zone logistic center
 	zsup3          = 2,  -- Add 3 supplies to a zone
 	zwh50          = 2,  -- Resupply warehouse with 50
@@ -1679,6 +1691,7 @@ allowedPlanes = {
     "F-14A-135-GR-Early",
     "F-14A-95-GR",
     "F-14B",
+    --"F-14BU",
     "F-15C",
     "F-15E",
     "F-15ESE",
@@ -1730,15 +1743,15 @@ allowedPlanes = {
     "Mirage-F1EE",
     "Mirage-F1EH",
     "Mirage-F1EQ",
-    --"Mirage-F1M-CE",
-    --"Mirage-F1M-EE",
+    "Mirage-F1M-CE",
+    "Mirage-F1M-EE",
     "OH58D",
     "OH-6A",
     "P3C_Orion",
     "SA342L",
-    --"SA342M",
+    "SA342M",
     "SA342Minigun",
-    --"SA342Mistral",
+    "SA342Mistral",
     "SU22",
     "Su-24MR",
     "Su-25",
@@ -1750,7 +1763,6 @@ allowedPlanes = {
     "FA-18C_hornet",
     "Ka-50_3",
     "Su-27",
-    --"F-14BU",
     "P-51D-30-NA",
     "SpitfireLFMkIX",
     "MosquitoFBMkVI",
@@ -1766,10 +1778,6 @@ allowedPlanes = {
     "P-51D",
     "SpitfireLFMkIXCW",
     "La-7",
-    "Mirage-F1M-CE",
-    "Mirage-F1M-EE",
-    "SA342M",
-    "SA342Mistral",
 }
 
 -- In this list, you can either remove or add what is allowed for the (RED SIDE) in the Coldwar or Gulfwar era.
@@ -1777,7 +1785,6 @@ allowedPlanes = {
 allowedPlanesRed = {
     "A-10A",
     "A-10C",
-    --"A-10C_2",
     "A-4E-C",
     "AH-1W",
     "AH-64D_BLK_II",
@@ -1789,17 +1796,15 @@ allowedPlanesRed = {
     "C-101CC",
     "C-130J-30",
     "CH-47Fbl1",
-    "E-2C",
     "F-100D",
-    "F-14A",
     "F-14A-135-GR",
     "F-14A-135-GR-Early",
     "F-14A-95-GR",
+    --"F-14B",
     --"F-14BU",
+    --"A-10C_2",
     "F-15C",
-    "F-15E",
     "F-15ESE",
-    "F-16A MLU",
     "F-16C_50",
     "F-4E-45MC",
     "F-5E-3",
@@ -1807,7 +1812,6 @@ allowedPlanesRed = {
     "F-86F Sabre",
     "FA-18C_hornet",
     "Hercules",
-    "Ka-27",
     "L-39C",
     "M-2000C",
     "MB-339A",
@@ -1815,8 +1819,6 @@ allowedPlanesRed = {
     "MH-60R",
     "MH-6J",
     "Mi-24P",
-    "Mi-24V",
-    "Mi-28NE",
     "Mi-8MT",
     "MiG-15bis",
     "MiG-15bis_FC",
@@ -1847,22 +1849,31 @@ allowedPlanesRed = {
     "Mirage-F1EE",
     "Mirage-F1EH",
     "Mirage-F1EQ",
-    --"Mirage-F1M-CE",
-    --"Mirage-F1M-EE",
+    "Mirage-F1M-CE",
+    "Mirage-F1M-EE",
     "OH58D",
     "OH-6A",
     "P3C_Orion",
     "SA342L",
-    --"SA342M",
+    "SA342M",
     "SA342Minigun",
-    --"SA342Mistral",
+    "SA342Mistral",
     "SU22",
-    "Su-24MR",
     "Su-25",
     "UH-1H",
     "UH-60A",
     "UH-60L",
     "UH-60L_DAP",
+    --"Ka-50_3",
+    --"Ka-50",
+    "E-2C",
+    "F-14A",
+    "F-15E",
+    "F-16A MLU",
+    "Ka-27",
+    "Mi-24V",
+    "Mi-28NE",
+    "Su-24MR",
     "F-14B",
     "P-51D-30-NA",
     "SpitfireLFMkIX",
@@ -1879,14 +1890,7 @@ allowedPlanesRed = {
     "P-51D",
     "SpitfireLFMkIXCW",
     "La-7",
-    --"F/A-18A",
-    --"Ka-50_3",
-    --"Ka-50",
     "A-10C_2",
-    "Mirage-F1M-CE",
-    "Mirage-F1M-EE",
-    "SA342M",
-    "SA342Mistral",
     "F/A-18A",
 }
 
@@ -2002,7 +2006,7 @@ restrictedWeapons = {
     "weapons.missiles.AGM_130",
     "weapons.missiles.AGM_154A",
     "weapons.missiles.AGM_154B",
-    --"weapons.missiles.AGM_65G",
+    "weapons.missiles.AGM_65G",
     "weapons.missiles.AGM_65H",
     "weapons.missiles.AGM_65K",
     "weapons.missiles.AGM_65L",
@@ -2012,10 +2016,10 @@ restrictedWeapons = {
     "weapons.missiles.ALARM",
     "weapons.missiles.Ataka_9M120F",
     "weapons.missiles.Ataka_9M220",
-    --"weapons.missiles.Vikhr_M",
-    --"weapons.missiles.BK90_MJ1",
-    --"weapons.missiles.BK90_MJ2",
-    --"weapons.missiles.BK90_MJ1_MJ2",
+    "weapons.missiles.Vikhr_M",
+    "weapons.missiles.BK90_MJ1",
+    "weapons.missiles.BK90_MJ2",
+    "weapons.missiles.BK90_MJ1_MJ2",
     "weapons.missiles.BRM-1_90MM",
     "weapons.missiles.C_701T",
     "weapons.missiles.C_802AK",
@@ -2052,9 +2056,8 @@ restrictedWeapons = {
     "weapons.missiles.X_59M",
     "weapons.missiles.YJ-12",
     "weapons.missiles.YJ-83",
-    --"weapons.containers.ALQ-184",
+    "weapons.containers.ALQ-184",
     "weapons.containers.alq-184long",
-    -- "weapons.containers.AN_ASQ_228",
     "weapons.missiles.AGM_114L",
     "weapons.missiles.AGM_114",
     -- "weapons.missiles.AGM_114K",
@@ -2077,17 +2080,14 @@ restrictedWeapons = {
     "weapons.bombs.KAB_1500T",
     "weapons.bombs.LS_6_100",
     "weapons.bombs.GBU-43/B(MOAB)",
+    -- "weapons.containers.AN_ASQ_228",
+    -- "weapons.containers.AAQ-28_LITENING",
+    -- "weapons.containers.AN_AAQ_33",
+    
 	"weapons.missiles.AGR_20A", -- laser rockets
     "weapons.missiles.AGM_154C",
     "weapons.bombs.GBU_24",
-    --"weapons.containers.AAQ-28_LITENING",
     "weapons.containers.AN_AAQ_33",
-    "weapons.missiles.AGM_65G",
-    "weapons.missiles.Vikhr_M",
-    "weapons.missiles.BK90_MJ1",
-    "weapons.missiles.BK90_MJ2",
-    "weapons.missiles.BK90_MJ1_MJ2",
-    "weapons.containers.ALQ-184",
 	"weapons.missiles.AGR_20_M282"} -- laser rockets
 
 -- In the Vietnam era, you can add or remove what to restrict.

@@ -1180,7 +1180,7 @@ WarehouseWeaponCaps = {
 -- Get extra reward if player keeps the same aircraft after a successful credits redeem and then another sortie with another credits redeem.
 -- Percentage of extra credits. 0 disables the reward, 10 is the default, and 50 is the maximum.
 -- @gui label="Same Aircraft Extra Reward %" validValues="Disabled=0 | 5%=5 | 10%=10 | 15%=15 | 20%=20 | 25%=25 | 30%=30 | 35%=35 | 40%=40 | 45%=45 | 50%=50"
-TurnaroundRewardPercent = 10
+TurnaroundRewardPercent = 20
 
 -- Advance Capture becomes available when an enemy zone has this percent or less of its upgrade groups remaining.
 -- Percent of upgrade groups remaining before Advance Capture appears.
@@ -1222,7 +1222,13 @@ ShopPrices = {
 	advancecapture = 500, -- Advance capture pressured enemy zone
 	intel         = 150,  -- Satellite Intel (60 min)
 	zinf          = 500,  -- Add infantry squad to zone
-	zsam          = 2000, -- Add Hawk/Nasams system to a zone
+	zhawk         = 2000, -- HAWK zone upgrade
+	zavenger      = 1000, -- Avenger zone upgrade
+	zroland       = 1000, -- Roland zone upgrade
+	zgepard       = 750, -- Gepard zone upgrade
+	zvulcan       = 500, -- Vulcan zone upgrade
+	zcram         = 1500, -- C-RAM zone upgrade
+	zsam          = 2000, -- Add NASAMS system to a zone
 	zlogc         = 2000, -- Make a zone logistic center
 	zwhrepair     = 2000, -- Repair warehouse building (30 minutes)
 	zsup3         = 750,  -- Add 3 supplies to a zone
@@ -1260,7 +1266,13 @@ ShopRankRequirements = {
 	supplies       = 6,  -- Fully Upgrade Friendly Zone
 	zinf           = 5,  -- Add infantry squad to zone
 	zarm           = 7,  -- Add armor group to a zone
-	zsam           = 6,  -- Add Hawk/Nasams system to a zone
+	zhawk         = 6, -- HAWK zone upgrade
+	zavenger      = 5, -- Avenger zone upgrade
+	zroland       = 5, -- Roland zone upgrade
+	zgepard       = 4, -- Gepard zone upgrade
+	zvulcan       = 3, -- Vulcan zone upgrade
+	zcram         = 6, -- C-RAM zone upgrade
+	zsam          = 6,  -- Add NASAMS system to a zone
 	zlogc          = 1,  -- Make a zone logistic center
 	zsup3          = 2,  -- Add 3 supplies to a zone
 	zwh50          = 2,  -- Resupply warehouse with 50

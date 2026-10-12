@@ -571,7 +571,7 @@ AllowedToCarrySupplies = {
 -- Get extra reward if player keeps the same aircraft after a successful credits redeem and then another sortie with another credits redeem.
 -- Percentage of extra credits. 0 disables the reward, 10 is the default, and 50 is the maximum.
 -- @gui label="Same Aircraft Extra Reward %" validValues="Disabled=0 | 5%=5 | 10%=10 | 15%=15 | 20%=20 | 25%=25 | 30%=30 | 35%=35 | 40%=40 | 45%=45 | 50%=50"
-TurnaroundRewardPercent = 10
+TurnaroundRewardPercent = 20
 
 -- Shop prices.
 -- @gui installPolicy="mergeRows"
@@ -592,6 +592,7 @@ ShopPrices = {
 	zsam          = 1000, -- Add AA guns to a zone
 	zewr          = 1000, -- Add Early Warning Radar to a zone
 	zlogc         = 2000, -- Make a zone logistic center
+	ztrainrepair  = 2000, -- Repair a destroyed train route between Blue zones
 	zsup3         = 750,  -- Add 3 supplies to a zone
 	zarm          = 1000, -- Add armor group to a zone
 	gslot         = 3000, -- Unlock extra upgrade slot
@@ -616,6 +617,7 @@ ShopRankRequirements = {
 	zsam           = 6,  -- Add AA guns to a zone
 	zewr           = 2,  -- Add Early Warning Radar to a zone
 	zlogc          = 1,  -- Make a zone logistic center
+	ztrainrepair   = 1,  -- Repair a destroyed train route between Blue zones
 	zsup3          = 2,  -- Add 3 supplies to a zone
 	zarm           = 7,  -- Add armor group to a zone
 	gslot          = 9,  -- Unlock extra upgrade slot
