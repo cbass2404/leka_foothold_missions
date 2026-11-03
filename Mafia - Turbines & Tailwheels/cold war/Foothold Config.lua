@@ -1,22 +1,6 @@
--- Version V1.0.9
--- ** CHANGE LOG **
---
--- Added CsarPilotSpawnWithoutCreditsChance,  - V1.0.3
--- Added CasDifficulty setting Advanced settings. - V1.0.3
--- Added SeadDifficulty setting with Advanced settings. - V1.0.3
--- Added RunwayStrikeDifficulty setting Advanced settings. - V1.0.3
--- Added MH-60R. Added CSAR Restore amounts - V1.0.4.
--- Added Escort allowed plane types. Added DisableMantis option. - V1.0.5
--- Added FootholdLocale language option. - V1.0.6
--- Added load error message for the config. - V1.0.7
--- Added support for Foothold WW2.lua. V1.0.8
--- Added Bunch off shit to the config. V1.0.9
--- Use Notepad++ and use compare tool to see the changes.
---
---
---
--- DO NOT TOUCH THIS BLOCK
---
+-- Foothold release: v5.4.5
+
+
 local savePath = (lfs and lfs.writedir and (lfs.writedir() .. "Missions\\Saves")) or nil
 local ww2Maps = {
     Normandy = true,
@@ -96,6 +80,7 @@ FootholdConfigTrackedScalarNames = {
     "ewrs_enabled",
     "PlayerZoneSuppliesConsumeStock",
     "RadioMenuStopSupplies",
+    "NoAIBlueCapture",
     "ZoneCaptureBuildSeconds",
     "NormalSupplyCapacity",
     "WarehouseSupplyCapacity",
@@ -375,9 +360,9 @@ RedCasPlaneEnabled = {
     -- @gui requiredValues="Su-25T"
     ["RED_SU25T_CAS_VIKHRx2_FAB500M62x2_KH29Tx2_2SHIP"] = false, -- eras=Modern; 2x Su-25T CAS [Modern]
     -- @gui requiredValues="MiG-21Bis"
-    ["RED_MIG21BIS_CAS_RBK250x2_UB32x2_1SHIP"] = false, -- eras=Modern; MiG-21bis CAS [Modern]
+    ["RED_MIG21BIS_CAS_RBK250x2_UB32x2_1SHIP"] = false, -- eras=Modern|Coldwar; MiG-21bis CAS [Modern/CW]
     -- @gui requiredValues="MiG-21Bis"
-    ["RED_MIG21BIS_CAS_RBK250x2_UB32x2_2SHIP"] = false, -- eras=Modern; 2x MiG-21bis CAS [Modern]
+    ["RED_MIG21BIS_CAS_RBK250x2_UB32x2_2SHIP"] = false, -- eras=Modern|Coldwar; 2x MiG-21bis CAS [Modern/CW]
     -- @gui requiredValues="Su-25"
     ["RED_SU25_CAS_KH25ML_S25Lx2_FAB500M62x2_B8x2_SPPU_1SHIP"] = true, -- eras=Coldwar; Su-25 CAS [CW]
     -- @gui requiredValues="Su-25"
@@ -1326,6 +1311,11 @@ AutoFillResources = 20
 -- @gui disabledWhen="RadioMenuStopSupplies|PvP:true"
 NoAIBlueSupplies = false
 
+-- Disable new automatic BLUE capture dispatches to neutral zones in PvE.
+-- Already deployed/restored missions, player deliveries and all shop requests remain available.
+-- @gui label="Disable Automatic BLUE Capture" disabledWhen="PvP:true"
+NoAIBlueCapture = false
+
 -- Allow BLUE players to enable or disable regular BLUE AI supply deliveries from the F10 radio menu.
 -- @gui disabledWhen="NoAIBlueSupplies|PvP:true"
 RadioMenuStopSupplies = false
@@ -1369,6 +1359,7 @@ AllowedToCarrySupplies = {
     ["P-51D"] = true,
     ["SpitfireLFMkIXCW"] = true,
     ["La-7"] = true,
+    ["AJS37"] = true,
 }
 
 -- If false, the "Supplies not loaded" warning sound is disabled.
@@ -1422,6 +1413,7 @@ ZoneSupplyTakeoffWarningTypes = {
     ["P-51D"] = true,
     ["SpitfireLFMkIXCW"] = true,
     ["La-7"] = true,
+    ["AJS37"] = true,
 }
 
 -- If true, smart weapons found in the WarehouseWeaponCaps table at the bottom, will be HALF what we add to the warehouse.
@@ -2268,6 +2260,7 @@ PvPSeparateAircraftLists = false
 -- @gui requiredSets="AircraftRequirements01" requiredWhen="Era:Modern;PvP:true;PvPSeparateAircraftLists:true"
 allowedPlanesModern = {
     "A-10A",
+    "F-111C",
     "A-10C",
     "A-10C_2",
     "AV8BNA",
@@ -2367,6 +2360,7 @@ allowedPlanesModern = {
 -- @gui requiredSets="AircraftRequirements06|AircraftRequirements07" requiredWhen="Era:Modern;PvP:true;PvPSeparateAircraftLists:true"
 allowedPlanesRedModern = {
     "MiG-29A",
+    "F-111C",
     "MiG-29S",
     "MiG-29 Fulcrum",
     "Su-27",
@@ -2540,6 +2534,7 @@ allowedPlanes = {
     "P-51D",
     "SpitfireLFMkIXCW",
     "La-7",
+    --"F-111C",
 }
 
 -- Shared Coldwar PvP warehouse aircraft for both coalitions when separate lists are disabled.
@@ -2548,6 +2543,7 @@ allowedPlanes = {
 -- @gui requiredSets="AircraftRequirements09|AircraftRequirements10|AircraftRequirements06|AircraftRequirements16" requiredWhen="Era:Coldwar|Gulfwar;PvP:true;PvPSeparateAircraftLists:false"
 allowedPlanesSharedColdwarPvP = {
     "A-10A",
+    --"F-111C",
     "A-10C",
     "A-4E-C",
     "AH-6J",
@@ -2633,6 +2629,7 @@ allowedPlanesSharedColdwarPvP = {
 -- @gui label="Coldwar Allowed BLUE Aircraft (PvP)" installPolicy="keepTable" editor="bucket" visibleWhen="Era:Coldwar|Gulfwar;PvP:true;PvPSeparateAircraftLists:true"
 -- @gui requiredSets="AircraftRequirements09|AircraftRequirements10" requiredWhen="Era:Coldwar|Gulfwar;PvP:true;PvPSeparateAircraftLists:true"
 allowedPlanesBlueColdwarPvP = {
+    --"F-111C",
     "A-10A",
     "A-10C",
     --"A-10C_2",
@@ -2697,6 +2694,7 @@ allowedPlanesBlueColdwarPvP = {
 -- @gui label="Allowed RED Aircraft" installPolicy="mergeRows" newItemPolicy="commentWhenVisible" editor="bucket" visibleWhen="Era:Coldwar|Gulfwar;PvP:true;PvPSeparateAircraftLists:true;PvP:false"
 allowedPlanesRed = {
     "A-10A",
+    "F-111C",
     "A-10C",
     "A-4E-C",
     "AH-64D_BLK_II",
@@ -2778,6 +2776,7 @@ allowedPlanesRed = {
 -- @gui requiredSets="AircraftRequirements06|AircraftRequirements16" requiredWhen="Era:Coldwar|Gulfwar;PvP:true;PvPSeparateAircraftLists:true"
 allowedPlanesRedColdwarPvP = {
     "A-10A",
+    --"F-111C",
     "A-10C",
     "A-4E-C",
     "AH-64D_BLK_II",
@@ -2849,9 +2848,9 @@ allowedPlanesVietnam = {
     "Bronco-OV-10A",
     "CH-47Fbl1",
     "F-100D",
-    "F-14A-135-GR",
-    "F-14A-135-GR-Early",
-    "F-14A-95-GR",
+    --"F-14A-135-GR",
+    --"F-14A-135-GR-Early",
+    --"F-14A-95-GR",
     "F-4E-45MC",
     "F-5E-3",
     "F-86F Sabre",
@@ -2891,6 +2890,12 @@ allowedPlanesVietnam = {
     "P-51D",
     "SpitfireLFMkIXCW",
     "La-7",
+    "AJS37",
+    "Mi-24P",
+    --"F-111C",
+    "F-14A-135-GR",
+    "F-14A-135-GR-Early",
+    "F-14A-95-GR",
 }
 
 -- Shared Vietnam PvP warehouse aircraft for both coalitions when separate lists are disabled.
@@ -2899,6 +2904,7 @@ allowedPlanesVietnam = {
 -- @gui requiredSets="AircraftRequirements09|AircraftRequirements18|AircraftRequirements06|AircraftRequirements20" requiredWhen="Era:Vietnam;PvP:true;PvPSeparateAircraftLists:false"
 allowedPlanesSharedVietnamPvP = {
     "A-4E-C",
+    --"F-111C",
     "Bronco-OV-10A",
     "CH-47Fbl1",
     "F-100D",
@@ -2963,6 +2969,7 @@ allowedPlanesSharedVietnamPvP = {
 -- @gui requiredSets="AircraftRequirements09|AircraftRequirements18" requiredWhen="Era:Vietnam;PvP:true;PvPSeparateAircraftLists:true"
 allowedPlanesBlueVietnamPvP = {
     "A-4E-C",
+    --"F-111C",
     "Bronco-OV-10A",
     "CH-47Fbl1",
     "F-100D",
@@ -3085,6 +3092,7 @@ allowedPlanesRedVietnamPvP = {
     "Su-27",
     "Su-33",
     --"L-39C",
+    --"F-111C",
     --"Su-25",
     --"F-16C_50",
     --"FA-18C_hornet",
@@ -3094,6 +3102,7 @@ allowedPlanesRedVietnamPvP = {
 -- @gui label="Mods aircraft list" installPolicy="mergeRows" editor="bucket" visibleWhen="AllowMods:true"
 restockAircraft = {
     "A-29B",
+    "F-111C",
     "A-4E-C",
     "Bronco-OV-10A",
     "EA-18G",

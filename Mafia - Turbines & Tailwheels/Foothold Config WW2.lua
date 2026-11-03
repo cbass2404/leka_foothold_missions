@@ -1,18 +1,4 @@
--- Version V1.0.8
--- ** CHANGE LOG **
---
--- Added CsarPilotSpawnWithoutCreditsChance,  - V1.0.3
--- Added CasDifficulty setting Advanced settings. - V1.0.3
--- Added SeadDifficulty setting with Advanced settings. - V1.0.3
--- Added RunwayStrikeDifficulty setting Advanced settings. - V1.0.3
--- Added MH-60R. Added CSAR Restore amounts - V1.0.4.
--- Added Escort allowed plane types. Added DisableMantis option. - V1.0.5
--- Added FootholdLocale language option. - V1.0.6
--- Added load error message for the config. - V1.0.7
--- Added support for Foothold WW2.lua
--- Use Notepad++ and use compare tool to see the changes.
---
---
+-- Foothold release: v5.4.5
 -- DO NOT TOUCH THIS BLOCK
 --
 local savePath = (lfs and lfs.writedir and (lfs.writedir() .. "Missions\\Saves")) or nil
