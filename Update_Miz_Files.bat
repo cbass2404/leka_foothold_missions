@@ -1,9 +1,11 @@
 @echo off
 rem ===========================================================================
-rem  Fix-RequiredModules.bat
+rem  Update_Miz_Files.bat
 rem
-rem  Does three independent jobs to every .miz found under this file's folder
-rem  (recursively), in a single rewrite of each archive:
+rem  Brings every .miz found under this file's folder (recursively) up to date
+rem  by running each of the jobs below against it. The jobs are independent -
+rem  any of them can be switched off - and whatever changes they produce are
+rem  written in a single rewrite of each archive:
 rem
 rem  1. requiredModules  - clears the ["requiredModules"] table in the archive's
 rem     "mission" entry, so DCS clients are not blocked from joining for want of
@@ -52,15 +54,15 @@ rem  The DCS Mission Editor rebuilds requiredModules from the units in the
 rem  mission every time you save, so re-run this after any round of edits.
 rem  It is safe to run repeatedly - missions already correct are left alone.
 rem
-rem  Usage:
-rem      Fix-RequiredModules.bat                       both jobs, keep backups
-rem      Fix-RequiredModules.bat --dry-run             report only, change nothing
-rem      Fix-RequiredModules.bat --no-backup           fix without making backups
-rem      Fix-RequiredModules.bat --no-customizations   skip the bundle job
-rem      Fix-RequiredModules.bat --no-modules          skip the requiredModules job
-rem      Fix-RequiredModules.bat --no-sounds           skip the micclick.ogg job
-rem      Fix-RequiredModules.bat --src "D:\repo"       take bundles from elsewhere
-rem      Fix-RequiredModules.bat "D:\some\dir"         scan a different folder
+rem  Usage (options combine freely):
+rem      Update_Miz_Files.bat                       run every job, keep backups
+rem      Update_Miz_Files.bat --dry-run             report only, change nothing
+rem      Update_Miz_Files.bat --no-backup           update without making backups
+rem      Update_Miz_Files.bat --no-customizations   skip the bundle job
+rem      Update_Miz_Files.bat --no-modules          skip the requiredModules job
+rem      Update_Miz_Files.bat --no-sounds           skip the micclick.ogg job
+rem      Update_Miz_Files.bat --src "D:\repo"       take bundles from elsewhere
+rem      Update_Miz_Files.bat "D:\some\dir"         scan a different folder
 rem ===========================================================================
 
 setlocal
@@ -348,8 +350,8 @@ foreach ($file in $files) {
 
         $state = Read-MizState -Path $file.FullName -IsWWII $isWWII -SoundEntry $soundEntry
 
-        # Replacements accumulate across both jobs and are written in one pass,
-        # so a mission needing both changes is still rebuilt only once.
+        # Replacements accumulate across all jobs and are written in one pass,
+        # so a mission needing several changes is still rebuilt only once.
         $repl      = New-Object 'System.Collections.Generic.Dictionary[string,byte[]]' ([StringComparer]::Ordinal)
         $notes     = @()
         $hardFail  = $false

@@ -1,4 +1,6 @@
--- Foothold release: v5.4.5
+-- Foothold release: v6.4.9
+-- Foothold mission version: v6.4.9
+-- Foothold map: Normandy WWII
 -- DO NOT TOUCH THIS BLOCK
 --
 local savePath = (lfs and lfs.writedir and (lfs.writedir() .. "Missions\\Saves")) or nil
@@ -33,6 +35,7 @@ FootholdConfigTrackedTableNames = {
 }
 -- Add new top-level scalar settings here so an omitted external setting triggers the warning.
 FootholdConfigTrackedScalarNames = {
+    "MaxRedGroundGroupsPerZone",
     "AdminCommands",
     "ewrs_enabled",
     "PlayerZoneSuppliesConsumeStock",
@@ -114,7 +117,7 @@ end
 -- End of do not touch
 --
 -- ============================================================================
--- Mission Rules
+-- Mission options
 -- ============================================================================
 
 -- Global language use for Foothold.
@@ -142,7 +145,7 @@ AutoRestart = false
 
 -- PVE_Only is a flag where you can decide if you want to disable players from spawning in red zones.
 -- This is when the player chooses Red coalition.
-PVE_Only = true -- If true, players can not spawn in red coalition zones.
+PVE_Only = false -- If true, players can not spawn in red coalition zones.
 
 -- If true, when players die their coalition loses 100 credits per death.
 CreditLosewhenKilled = false
@@ -172,7 +175,7 @@ StoreLimit = false
 RankingSystem = false
 
 -- friendly fire ranking penalty
-FriendlyFireRankPenalty = 500
+FriendlyFireRankPenalty = 1000
 
 -- ============================================================================
 -- Difficulty
@@ -189,24 +192,41 @@ GlobalSettings = GlobalSettings or {}
 -- @gui label="AI Spawn Speed Scaling" editor="sideMultiplier" min="0.10" max="5.00" step="0.05"
 GlobalSettings.difficultyScaling = { [1]=1.0, [2]=1.0 }
 
--- @gui label="Red AI Plane Skill" validValues="Average=Average | Good=Good | High=High | Excellent=Excellent | Random=Random"
-AiPlaneSkill            = "Random" -- AI skill used for spawned airplanes Red only (MOOSE SPAWN:InitSkill).
+
+
+
+RedReactiveDifficulty   = "medium" -- RED reactive counterpressure difficulty.
+
+-- ============================================================================
+-- Ground Units
+-- ============================================================================
+-- Sets the maximum number of Red ground groups per zone in a fresh Normandy campaign.
+-- Choose 3 to 6. Each zone still rolls within its own range, so some get fewer groups.
+-- @gui label="Ground Units Max Groups at Each Zone" validValues="3=3 | 4=4 | 5=5 | 6=6"
+MaxRedGroundGroupsPerZone = 6
 
 -- Valid: "Average", "Good", "High", "Excellent", "Random" (case-insensitive). Unknown values become "High".
-RedAiGroundSkill        = "Good" -- AI skill used for spawned RED zone ground defenses (MOOSE SPAWN:InitSkill).
+RedAiGroundSkill        = "Random" -- AI skill used for spawned RED zone ground defenses (MOOSE SPAWN:InitSkill).
 
 -- Valid: "Average", "Good", "High", "Excellent", "Random" (case-insensitive). Unknown values become "High".
 BlueAiGroundSkill       = "Excellent" -- AI skill used for spawned BLUE zone ground defenses (MOOSE SPAWN:InitSkill).
 
+-- ============================================================================
+-- AI Flights
+-- ============================================================================
+
+-- @gui label="Red AI Plane Skill" validValues="Average=Average | Good=Good | High=High | Excellent=Excellent | Random=Random"
+AiPlaneSkill            = "Random" -- AI skill used for spawned airplanes Red only (MOOSE SPAWN:InitSkill).
+
 -- Valid values: "easy" | "medium" | "hard"
 -- Here, you can adjust how many cap should spawn. medium, is the default (Balanaced)
-CapDifficulty           = "easy" -- RED CAP amount.  This can be further custommized in the advance section.
+CapDifficulty           = "medium" -- RED CAP amount.  This can be further custommized in the advance section.
 CasDifficulty           = "medium" -- RED CAS amount.  This can be further custommized in the advance section.
+
+RunwayStrikeDifficulty  = "medium" -- RED RUNWAYSTRIKE amount.  This can be further custommized in the advance section.
 
 FriendlyCapSupport      = "medium" -- BLUE CAP support limit. This can be further custommized in the advance section.
 FriendlyCasSupport      = "medium" -- BLUE CAS support limit.  This can be further custommized in the advance section.
-RunwayStrikeDifficulty  = "medium" -- RED RUNWAYSTRIKE amount.  This can be further custommized in the advance section.
-RedReactiveDifficulty   = "medium" -- RED reactive counterpressure difficulty.
 
 -- ============================================================================
 -- Difficulty advanced
@@ -560,7 +580,7 @@ AllowedToCarrySupplies = {
 -- Get extra reward if player keeps the same aircraft after a successful credits redeem and then another sortie with another credits redeem.
 -- Percentage of extra credits. 0 disables the reward, 10 is the default, and 50 is the maximum.
 -- @gui label="Same Aircraft Extra Reward %" validValues="Disabled=0 | 5%=5 | 10%=10 | 15%=15 | 20%=20 | 25%=25 | 30%=30 | 35%=35 | 40%=40 | 45%=45 | 50%=50"
-TurnaroundRewardPercent = 20
+TurnaroundRewardPercent = 30
 
 -- Available NEW shop purchases. False removes an item; true keeps its existing eligibility.
 -- Mode, era, national template and operator restrictions still apply. Changes take effect on restart.
@@ -719,7 +739,7 @@ FlightTimeRewardPerMinute = 2
 --
 -- If you want to reward all players no mater what aircraft, then set this to true, if set to false, you can choose who get the reward.
 -- in the AllowedFlightTimeReward table below.
-RewardAllAircraft = false
+RewardAllAircraft = true
 
 
 -- @gui label="Allowed Flight Time Reward" installPolicy="mergeRows" editor="checkboxTable"
